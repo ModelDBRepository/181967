@@ -32,10 +32,14 @@ TITLE decay of internal calcium concentration
 : subtypes in CA1 pyramidal neurons". J. of Neuroscience 19(20) 8789-8798, 1999.
 :
 :  factor 10000 is replaced by 10000/18 needed in ca entry
-:  taur --rate of calcium removal-- is replaced by taur*7 (7 times faster) 
-
-
-INDEPENDENT {t FROM 0 TO 1 WITH 1 (ms)}
+:  taur --rate of calcium removal-- is replaced by taur*7 (7 times faster)
+:
+: 20150524 NTC
+: Changed integration method from euler to derivimplicit
+: which is appropriate for simple ion accumulation mechanisms.
+: See
+: Integration methods for SOLVE statements
+: http://www.neuron.yale.edu/phpBB/viewtopic.php?f=28&t=592
 
 NEURON {
 	SUFFIX cad
@@ -55,7 +59,7 @@ UNITS {
 
 
 PARAMETER {
-	depth	= .1	(um)		: depth of shell
+	depth	= 0.1	(um)		: depth of shell
 	taur	= 200	(ms)		: rate of calcium removal
 	cainf	= 100e-6(mM)
 	cai		(mM)
@@ -75,7 +79,8 @@ ASSIGNED {
 }
 	
 BREAKPOINT {
-	SOLVE state METHOD euler
+	SOLVE state METHOD derivimplicit : not euler
+    : see http://www.neuron.yale.edu/phpBB/viewtopic.php?f=28&t=592
 }
 
 DERIVATIVE state { 
@@ -87,10 +92,4 @@ DERIVATIVE state {
         ca' = drive_channel/18 + (cainf -ca)/taur*7
 	cai = ca
 }
-
-
-
-
-
-
 
