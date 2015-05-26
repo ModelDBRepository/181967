@@ -35,6 +35,7 @@ TITLE decay of internal calcium concentration
 :  taur --rate of calcium removal-- is replaced by taur*7 (7 times faster)
 :
 : 20150524 NTC
+: Fixed ca initialization by inserting cai = ca into INITIAL block.
 : Changed integration method from euler to derivimplicit
 : which is appropriate for simple ion accumulation mechanisms.
 : See
@@ -71,6 +72,7 @@ STATE {
 
 INITIAL {
 	ca = cainf
+  cai = ca
 }
 
 ASSIGNED {
